@@ -1,5 +1,5 @@
 ---
-title: Node Types
+title: Node Types(节点类型)
 statusIcon: ✅
 entries:
   - node

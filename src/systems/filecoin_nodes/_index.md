@@ -1,6 +1,6 @@
 ---
 menuIcon: ⚙️
-title: "**Filecoin Nodes**"
+title: "**Filecoin Nodes(Filecoin节点)**"
 entries:
 - node_types
 - repository
