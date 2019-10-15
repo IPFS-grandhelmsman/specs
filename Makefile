@@ -193,7 +193,7 @@ test-codeGen: bin/codeGen
 
 serve: build-hugo .PHONY
 	echo "run 'make website' and refresh to update"
-	cd hugo && hugo serve --noHTTPCache
+	cd hugo && hugo serve --noHTTPCache --bind=0.0.0.0
 
 serve-website: website .PHONY
 	# use this if `make serve` breaks
