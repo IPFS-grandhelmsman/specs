@@ -1,5 +1,5 @@
 ---
-title: Retrieval Miner Node
+title: Retrieval Miner Node(检索矿工节点)
 ---
 
 ```
