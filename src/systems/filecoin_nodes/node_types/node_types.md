@@ -11,7 +11,7 @@ This section should contain:
 本节应包括:
 
 - what all nodes must have, and why
-- 所有节点必须有什么，为什么
+- 所有节点必须有什么，和为什么
 - examples of using different systems
 - 使用不同系统的例子
 
