@@ -1,5 +1,5 @@
 ---
-title: Chain Verifier Node(链验证器节点)
+title: Chain Verifier Node - 链验证器节点
 ---
 
 ```

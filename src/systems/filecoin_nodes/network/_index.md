@@ -1,5 +1,5 @@
 ---
-title: Network Interface(网络接口)
+title: Network Interface - 网络接口
 statusIcon: ⚠️
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Examples(例子)
+title: Examples - 例子
 ---
 
 There are many kinds of Filecoin Nodes ...

@@ -1,5 +1,5 @@
 ---
-title: Client Node(客户端节点))
+title: Client Node - 客户端节点
 ---
 
 ```

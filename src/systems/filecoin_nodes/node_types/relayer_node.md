@@ -1,5 +1,5 @@
 ---
-title: Relayer Node(中继节点)
+title: Relayer Node - 中继节点
 ---
 
 ```

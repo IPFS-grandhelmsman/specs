@@ -1,13 +1,13 @@
 ---
-title: Introduction(介绍)
+title: Introduction - 介绍
 entries:
 #  - specmap
-- arch(架构)
-- concepts(概念)
-- filecoin_vm(VM)
-- process(进程)
-- changelog
-- system(系统)
+- arch - 架构
+- concepts - 概念
+- filecoin_vm - VM
+- process - 进程
+- changelog - 变更日志
+- system - 系统
 ---
 
 <center><img src="./docs/intro/underconstruction.gif" height="128px" /></center>
@@ -45,7 +45,7 @@ Filecoin uses proof of storage itself: a miner's power in the consensus protocol
 is proportional to the amount of storage it provides.
 
 Filecoin是一个基于区块链机制的分布式存储网络。
-Filecoin *miner*可以选择为网络提供存储容量，从而
+Filecoin *miner* 可以选择为网络提供存储容量，从而
 通过定期生成来获得Filecoin加密货币(FIL)的单位
 证明它们提供指定容量的密码证明。
 此外，Filecoin允许各方交换FIL货币
@@ -69,7 +69,7 @@ Filecoin区块链不仅为FIL交易和维护分类帐
 但也实现了Filecoin VM，一个执行的复制状态机
 参与者之间的各种加密契约和市场机制
 在网络上。
-这些合约包括“储存合约”，客户向矿商支付外汇
+这些合约包括 *储存交易* 客户向矿商支付外汇
 作为交换，存储客户端请求的特定文件数据。
 通过分布式实现的Filecoin虚拟机，存储交易
 链上记录的其他契约机制继续被处理

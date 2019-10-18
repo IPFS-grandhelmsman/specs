@@ -1,5 +1,5 @@
 ---
-title: Systems(系统)
+title: Systems - 系统
 entries:
 - filecoin_nodes
 - filecoin_files

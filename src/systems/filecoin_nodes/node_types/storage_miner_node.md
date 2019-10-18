@@ -1,5 +1,5 @@
 ---
-title: Storage Miner Node(存储矿工节点)
+title: Storage Miner Node - 存储矿工节点
 ---
 
 ```

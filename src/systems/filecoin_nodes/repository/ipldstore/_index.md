@@ -1,6 +1,6 @@
 ---
 menuTitle: IpldStore
-title: "IpldStore - Local Storage for hash-linked data(IpldStore——哈希链接数据的本地存储)"
+title: "IpldStore - Local Storage for hash-linked data - IpldStore——哈希链接数据的本地存储"
 ---
 
 {{< readfile file="../../../../libraries/ipld/ipld.id" code="true" lang="go" >}}
