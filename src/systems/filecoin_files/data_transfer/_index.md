@@ -1,7 +1,7 @@
 ---
-menuTitle: Data Transfer
+menuTitle: Data Transfer - 数据传输
 statusIcon: 🔁
-title: "Data Transfer in Filecoin"
+title: "Data Transfer in Filecoin - Filecoin数据传输"
 ---
 
 _Data Transfer_ is a system for transferring all or part of a `Piece` across the network when a deal is made.

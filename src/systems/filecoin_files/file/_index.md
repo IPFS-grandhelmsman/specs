@@ -1,5 +1,5 @@
 ---
-title: File(文件)
+title: File - 文件
 statusIcon: ✅
 entries:
 - filestore

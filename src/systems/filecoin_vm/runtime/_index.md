@@ -1,7 +1,7 @@
 ---
-menuTitle: Runtime
+menuTitle: Runtime 运行时
 statusIcon: ⚠️
-title: VM Runtime Environment (Inside the VM)
+title: VM Runtime Environment (Inside the VM) - VM运行时环境(VM里面的)
 entries:
 - exitcode
 - gascost

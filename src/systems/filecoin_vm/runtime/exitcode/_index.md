@@ -1,6 +1,6 @@
 ---
-menuTitle: Exit Codes
-title: VM Exit Code Constants
+menuTitle: Exit Codes - 退出代码
+title: VM Exit Code Constants - VM退出代码的常量值
 ---
 
 {{< readfile file="vm_exitcodes.id" code="true" lang="go" >}}

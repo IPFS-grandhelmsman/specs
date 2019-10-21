@@ -1,8 +1,10 @@
-# Init Actor
+# Init Actor - 初始化角色
 
 - **Code Cid**: `<codec:raw><mhType:identity><"init">`
 
 The init actor is responsible for creating new actors on the filecoin network. This is a built-in actor and cannot be replicated. In the future, this actor will be responsible for loading new code into the system (for user programmable actors). ID allocation for user instantiated actors starts at 100. This means that `NextID` will initially be set to 100.
+
+初始化角色负责在filecoin网络上创建新的角色，这是一个内置的角色，不能被复制。将来，这个角色将负责向系统中加载新代码(对于用户可编程角色)。用户实例化的参与者的ID分配从100开始。这意味着`NextID`将会被初始化设置为100。
 
 ```sh
 type InitActorState struct {
@@ -11,7 +13,7 @@ type InitActorState struct {
 }
 ```
 
-## Methods
+## Methods - 方法
 
 | Name | Method ID |
 |--------|-------------|
@@ -19,9 +21,9 @@ type InitActorState struct {
 | `Exec` | 2 |
 | `GetIdForAddress` | 3 |
 
-## `Constructor`
+## `Constructor - 构造器`
 
-**Parameters**
+**Parameters - 参数**
 
 ```sh
 type InitConstructor struct {
@@ -29,13 +31,15 @@ type InitConstructor struct {
 
 ```
 
-**Algorithm**
+**Algorithm - 算法**
 
-## `Exec`
+## `Exec - 执行`
 
 This method is the core of the `Init Actor`. It handles instantiating new actors and assigning them their IDs.
 
-**Parameters**
+这个方法是`初始化角色`的核心。它处理实例化新的参与者并为其分配id。
+
+**Parameters - 参数**
 
 ```sh
 type Exec struct {
@@ -46,7 +50,7 @@ type Exec struct {
 } representation tuple
 ```
 
-**Algorithm**
+**Algorithm - 算法**
 
 ```go
 func Exec(code Cid, params ActorMethod) Address {
@@ -103,11 +107,13 @@ func (VM VM) ComputeActorAddress(creator Address, nonce Integer) Address {
 }
 ```
 
-## `GetIdForAddress`
+## `GetIdForAddress - 为地址获取ID`
 
 This method allows for fetching the corresponding ID of a given Address
 
-**Parameters**
+此方法允许获取给定地址的对应ID
+
+**Parameters - 参数**
 
 ```sh
 type GetIdForAddress struct {
@@ -115,7 +121,7 @@ type GetIdForAddress struct {
 } representation tuple
 ```
 
-**Algorithm**
+**Algorithm -参数**
 
 ```go
 func GetIdForAddress(addr Address) UInt {

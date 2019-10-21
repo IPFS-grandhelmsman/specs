@@ -1,7 +1,7 @@
 ---
 menuIcon: 📑
-menuTitle: "**Files & Data**"
-title: Files & Data (文件和数据)
+menuTitle: "**Files & Data - 文件和数据**"
+title: Files & Data  - 文件和数据
 entries:
 - file
 - piece

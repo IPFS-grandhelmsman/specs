@@ -1,7 +1,7 @@
 ---
 menuIcon: 💻
-menuTitle: "**Virtual Machine**"
-title: VM - Virtual Machine
+menuTitle: "**Virtual Machine - 虚拟机**"
+title: VM - Virtual Machine - VM - 虚拟机
 entries:
 - actor
 - state_tree

@@ -1,5 +1,5 @@
 ---
-menuTitle: IpldStore
+menuTitle: IpldStore - Ipld存储
 title: "IpldStore - Local Storage for hash-linked data - IpldStore——哈希链接数据的本地存储"
 ---
 
