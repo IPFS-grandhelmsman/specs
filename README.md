@@ -10,6 +10,8 @@ https://filecoin-project.github.io/specs is the user-friendly website rendering,
 
 **Note**: The website is periodically updated. It does not update automatically with every merge to master. The rendered spec notes the version and build time. The best way to make sure you are seeing the latest is to verify the hash matches master in this repository. If not, build it yourself.
 
+您可以通过它的[网站呈现](http://120.77.213.165:1313)查看和探索Filecoin规范。您不需要下载并使用这个存储库。
+
 ## Contributing
 
 Please [read the spec process](https://filecoin-project.github.io/specs/#intro__process). Please file PRs on github with fixes.
