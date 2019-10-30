@@ -45,14 +45,9 @@ Filecoin uses proof of storage itself: a miner's power in the consensus protocol
 is proportional to the amount of storage it provides.
 
 Filecoin是一个基于区块链机制的分布式存储网络。
-Filecoin *miner* 可以选择为网络提供存储容量，从而
-通过定期生成来获得Filecoin加密货币(FIL)的单位
-证明它们提供指定容量的密码证明。
-此外，Filecoin允许各方交换FIL货币
-通过记录在Filecoin区块链上的共享分类帐中的交易。
-然而，与其使用nakamoto风格的工作证明来维持链上的一致，
-Filecoin使用存储本身的证明:协商一致协议中的矿工的力量
-与它提供的存储容量成正比。
+Filecoin *miner* 可以选择为网络提供存储容量，从而通过定期生成来获得Filecoin加密货币(FIL)的单位证明它们提供指定容量的密码证明。
+此外，Filecoin允许各方交换FIL货币通过记录在Filecoin区块链上的共享分类帐中的交易。
+然而，与其使用nakamoto风格的工作证明来维持链上的一致，Filecoin使用本身的存储证明:共识协议中的矿工的能力与它提供的存储总量成正比。
 
 The Filecoin blockchain not only maintains the ledger for FIL transactions and
 accounts, but also implements the Filecoin VM, a replicated state machine which executes
@@ -65,13 +60,7 @@ and other contract mechanisms recorded on the chain continue to be processed
 over time, without requiring further interaction from the original parties
 (such as the clients who requested the data storage).
 
-Filecoin区块链不仅为FIL交易和维护分类帐
-但也实现了Filecoin VM，一个执行的复制状态机
-参与者之间的各种加密契约和市场机制
-在网络上。
-这些合约包括 *储存交易* 客户向矿商支付外汇
-作为交换，存储客户端请求的特定文件数据。
-通过分布式实现的Filecoin虚拟机，存储交易
-链上记录的其他契约机制继续被处理
-随着时间的推移，不需要原始方的进一步交互
-(例如请求数据存储的客户机)。
+Filecoin区块链不仅为FIL交易和维护分类帐但也实现了Filecoin VM，一个执行的复制状态机参与者之间的各种加密契约和市场机制在网络上。
+这些合约包括 *储存交易* 客户向矿商支付外汇作为交换，存储客户端请求的特定文件数据。
+通过分布式实现的Filecoin虚拟机，存储交易链上记录的其他契约机制随着时间的推移继续被处理，不需要原始方的进一步交互(例如请求数据存储的客户机)。
+

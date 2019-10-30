@@ -1,5 +1,5 @@
 ---
-title: Algorithms
+title: Algorithms - 算法
 entries:
   - expected_consensus
   - porep

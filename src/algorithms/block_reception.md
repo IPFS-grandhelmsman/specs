@@ -1,5 +1,5 @@
 ---
-title: "Block Reception"
+title: "Block Reception - 块接收区"
 ---
 
 {{<label block-reception>}}
