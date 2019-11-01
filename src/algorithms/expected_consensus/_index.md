@@ -340,7 +340,7 @@ We get:
 
 ```sh
 Note that if your implementation does not allow for rounding to the fourth decimal, miners should apply the [tie-breaker below](#selecting-between-tipsets-with-equal-weight). Weight changes will be on the order of single digit numbers on expectation, so this should not have an outsized impact on chain consensus across implementations.
-请注意，如果您的实现不允许四舍五入到第四个小数，则矿商应该应用[下面的tie-breaker](#selecting-between-tipset-with-equal-weight)。权重的变化将按照预期的个位数的顺序进行，因此这对跨实现链的共识不会有太大的影响。
+请注意，如果您的实现不允许四舍五入到第四个小数，则矿工应该应用[下面的tie-breaker](#selecting-between-tipset-with-equal-weight)。权重的变化将按照预期的个位数的顺序进行，因此这对跨实现链的共识不会有太大的影响。
 ```
 
 `ParentWeight` is the aggregate chain weight of a given block's parent set. It is calculated as
@@ -367,7 +367,7 @@ The above case may happen in situations under certain block propagation conditio
 
 Miner 1 outputs their block B and shuts down. Miners 2 and 3 both receive B but not each others' blocks. We have miner 2 mining a Tipset made of B and C and miner 3 mining a Tipset made of B and D. If both succesfully mine blocks now, other miners in the network will receive new blocks built off of Tipsets with equal weight and the same smallest ticket (that of block B). They should select the block mined atop [B, C] since minTicket(C) < minTicket(D).
 
-矿工1输出它们的区块B并关闭。矿工2和3都得到了B，但没有得到相互间的区块。我们有矿工2从B和C开挖一个Tipset，矿工3从B和D开挖一个Tipset .如果两者现在成功挖块,网络中的其他矿商将收到新的块以同样的最小重量和相同的最小的票据(块B)由Tipset建出，因为minTicket(C) < minTicket(D)，他们应该选择在[B, C]之上的块挖掘。
+矿工1输出它们的区块B并关闭。矿工2和3都得到了B，但没有得到相互间的区块。我们有矿工2从B和C开挖一个Tipset，矿工3从B和D开挖一个Tipset .如果两者现在成功挖块,网络中的其他矿工将收到新的块以同样的最小重量和相同的最小的票据(块B)由Tipset建出，因为minTicket(C) < minTicket(D)，他们应该选择在[B, C]之上的块挖掘。
 
 The probability that two Tipsets with different blocks would have all the same tickets can be considered negligible: this would amount to finding a collision between two 256-bit (or more) collision-resistant hashes.
 

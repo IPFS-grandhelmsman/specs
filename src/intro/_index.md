@@ -61,6 +61,6 @@ over time, without requiring further interaction from the original parties
 (such as the clients who requested the data storage).
 
 Filecoin区块链不仅为FIL交易和维护分类帐但也实现了Filecoin VM，一个执行的复制状态机参与者之间的各种加密契约和市场机制在网络上。
-这些合约包括 *储存交易* 客户向矿商支付外汇作为交换，存储客户端请求的特定文件数据。
+这些合约包括 *储存交易* 客户向矿工支付外汇作为交换，存储客户端请求的特定文件数据。
 通过分布式实现的Filecoin虚拟机，存储交易链上记录的其他契约机制随着时间的推移继续被处理，不需要原始方的进一步交互(例如请求数据存储的客户机)。
 

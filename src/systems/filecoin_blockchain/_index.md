@@ -56,7 +56,7 @@ Beyond participating in the Storage Market (see the {{<sref storage_market>}} sp
 
 {{<sref expected_consensus>}} has two main components: a leader election process and a chain selection algorithm dependent on a weight function.
 
-{{<sref expected_consensus "扩展共识">}} 有两个主要组件:一个领导人选举过程和一个基于权重函数的链选择算法。
+{{<sref expected_consensus>}} 有两个主要组件:一个领导人选举过程和一个基于权重函数的链选择算法。
 
 ## Tipsets - Tipset
 
@@ -66,7 +66,7 @@ EC可以在给定的回合中选举多个领导人，这意味着Filecoin链可�
 
 Accordingly, blocks from a given round are assembled into Tipsets according to certain rules (they must share the same parents and have been mined at the same height). The Filecoin state tree is modified by the execution of all messages in a given Tipset. Different miners may mine on different Tipsets because of network propagation delay.
 
-因此，根据特定的规则(它们必须共享相同的父元素，并且在相同的高度被开采)，将来自给定回合的块组装到Tipset中。通过执行给定Tipset中的所有消息来修改Filecoin状态树。由于网络传播延迟的原因，不同的采矿者可能在不同的Tipset上进行开采。
+因此，根据特定的规则(它们必须共享相同的父级，并且在相同的高度被开采)，将来自给定回合的块组装到Tipset中。通过执行给定Tipset中的所有消息来修改Filecoin状态树。由于网络传播延迟的原因，不同的采矿者可能在不同的Tipset上进行开采。
 
 Due to this fact, adding new blocks to the chain actually validate those blocks' parent Tipsets, that is: executing the messages of a new block, a miner cannot know exactly what state tree this will yield. That state tree is only known once all messages in that block's Tipset have been executed. Accordingly, it is in the next round (and based on the number of blocks mined on a given Tipset) that a miner will be able to choose which state tree to extend.
 
@@ -93,7 +93,7 @@ The blocks in a tipset have no defined order in representation. During state com
 
 Due to network propagation delay, it is possible for a miner in round N+1 to omit valid blocks mined at round N from their Tipset. This does not make the newly generated block invalid, it does however reduce its weight and chances of being part of the canonical chain in the protocol as defined by EC's {{<sref chain_selection>}} function.
 
-由于网络传播延迟，在第N+1轮挖掘的矿商可能会从他们的Tipset中忽略在第N轮挖掘的有效块。这并不会使新生成的块无效，但是它确实降低了它的权重，并且降低了成为协议中规范链的一部分的机会，这是由EC的{{<sref chain_selection "链选择">}} 函数定义的。
+由于网络传播延迟，在第N+1轮挖掘的矿工可能会从他们的Tipset中忽略在第N轮挖掘的有效块。这并不会使新生成的块无效，但是它确实降低了它的权重，并且降低了成为协议中规范链的一部分的机会，这是由EC的{{<sref chain_selection "链选择">}} 函数定义的。
 
 ## TODO -- reorder this - 重排序这
 

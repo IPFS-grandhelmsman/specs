@@ -1,5 +1,5 @@
 ---
-title: "Blocks"
+title: "Blocks - 区块"
 statusIcon: ✅
 entries:
 - block
