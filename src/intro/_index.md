@@ -2,12 +2,12 @@
 title: Introduction - 介绍
 entries:
 #  - specmap
-- arch - 架构
-- concepts - 概念
-- filecoin_vm - VM
-- process - 进程
-- changelog - 变更日志
-- system - 系统
+- arch
+- concepts
+- filecoin_vm
+- process
+- changelog
+- system
 ---
 
 <center><img src="./docs/intro/underconstruction.gif" height="128px" /></center>
