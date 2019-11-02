@@ -1,5 +1,5 @@
 ---
-title: Rational-PoSt
+title: Rational-PoSt - 时空证明原理
 ---
 
 This document describes Rational-PoSt, the Proof-of-Spacetime used in Filecoin.

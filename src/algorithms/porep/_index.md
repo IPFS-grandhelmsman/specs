@@ -1,5 +1,5 @@
 ---
-title: Proof-of-Replication
+title: Proof-of-Replication - 复制证明
 entries:
 - stacked_drg
 - porep_commitments
@@ -7,3 +7,5 @@ entries:
 ---
 
 See [Filecoin Paper](https://filecoin.io/filecoin.pdf)
+
+参考[Filecoin白皮书](https://filecoin.io/filecoin.pdf)

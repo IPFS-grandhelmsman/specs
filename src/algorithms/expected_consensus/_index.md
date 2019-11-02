@@ -380,7 +380,7 @@ EC enforces a version of soft finality whereby all miners at round N will reject
 EC实施了一个软终结的版本，在第N轮的所有矿工将拒绝在第N-F轮之前分叉的所有区块。为了说明目的，我们可以将F设为500。严格地说，EC是一个可能的最终协议，选择这样的F简化了矿工实现，并在不牺牲链中的活动性的情况下实现了宏观经济强制的最终性。
 
 {{<label consensus_faults>}}
-## Consensus Faults - 共识错误
+## Consensus Faults - 共识故障
 
 Due to the existence of potential forks in EC, a miner can try to unduly influence protocol fairness. This means they may choose to disregard the protocol in order to gain an advantage over the power they should normally get from their storage on the network. A miner should be slashed if they are provably deviating from the honest protocol.
 
@@ -404,7 +404,6 @@ This is detectable when a given miner submits two blocks that satisfy any of the
 
 Any node that detects any of the above events should submit both block headers to the `StoragePowerActor`'s `ReportConsensusFault` method. The "slasher" will receive a portion (TODO: define how much) of the offending miner's {{<sref pledge_collateral>}} as a reward for notifying the network of the fault.
 (TODO: FIP of submitting commitments to block headers to prevent miners censoring slashers in order to gain rewards).
-
 任何检测到上述任何事件的节点都应该将两个区块头提交到`存储能力角色`的`reportaccepsusfault`方法。`削减者`将收到违规矿工的{{<sref pledge_collateral "抵押担保">}}的一部分(TODO:定义多少)作为通知网络故障的奖励。
 (TODO: FIP的提交对区块头的承诺来防止矿工删减削减者以获得奖励)。
 
