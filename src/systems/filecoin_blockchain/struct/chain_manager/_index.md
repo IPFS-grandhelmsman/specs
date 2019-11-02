@@ -37,22 +37,26 @@ A semantically valid block:
   - that they are all at the same height (i.e. include the same number of tickets)
   - 他们都在同一高度(即包括相同数量的票据)
 - must have a valid tickets generated from the minTicket in its parent tipset.
+- 必须具有从其父tipset中的最小票据生成的有效票据。
 - must only have valid state transitions:
 - 必须只有有效的状态转换:
   - all messages in the block must be valid
   - 在该区块中所有消息必须被校验
   - the execution of each message, in the order they are in the block, must produce a receipt matching the corresponding one in the receipt set of the block.
+  - 每个消息的执行，按照它们在块中的顺序，必须生成一个收据匹配到对应的块收据集合中的一个。
 - the resulting state root after all messages are applied, must match the one in the block
-- 所有消息生效后的结果状态根必须与块中的状态根相匹配
+- 所有消息生效后的结果状态根，必须匹配块中的一个。
 
 
 {{% notice info %}}
 Once the block passes validation, it must be added to the local datastore, regardless whether it is understood as the best tip at this point. Future blocks from other miners may be mined on top of it and in that case we will want to have it around to avoid refetching.
+
 一旦块通过验证，就必须将它添加到本地数据存储中，不管它是否被理解为此时的最佳的Tip。未来来自其他矿工的区块可能会在它上面开采，在这种情况下，我们希望它在附近以避免重新抓取。
 {{% /notice %}}
 
 {{% notice info %}}
 To make certain validation checks simpler, blocks should be indexed by height and by parent set. That way sets of blocks with a given height and common parents may be quickly queried. It may also be useful to compute and cache the resultant aggregate state of blocks in these sets, this saves extra state computation when checking which state root to start a block at when it has multiple parents.
+
 为了使某些验证检查更简单，块应该根据高度和父集建立索引。这样，具有给定高度和公共父集的块集可以快速查询。在这些集合中计算和缓存块的最终聚合状态可能也很有用，这在检查当一个块有多个父块时在哪个状态根启动块时节省了额外的状态计算。
 {{% /notice %}}
 
@@ -61,19 +65,19 @@ The following requires having and processing (executing) the messages
 以下要求拥有和处理(执行)消息
 
 - Messages can be checked by verifying the messages hash correctly to the value.
-- 可以通过验证消息哈希值是否正确来检查消息。
+- 消息可以通过验证消息哈希值是否正确来检查。
 - MessageAggregateSig can be checked by verifying the messages sign correctly
-- MessageAggregateSig能够被通过验证消息签名的正确性来检查
+- 消息集合签名能够被通过验证消息签名的正确性来检查
 - MessageReceipts can only be checked by executing the messages
-- MessageReceipts只能通过执行消息来检查
+- 消息收据只能通过执行消息来检查
 - StateRoot is the result of the execution of the messages, and can only be verified by executing them
-- StateRoot是消息执行的结果，只能通过执行它们来验证
+- 状态根是消息执行的结果，只能通过执行它们来验证
 
 ## Block reception algorithm - 区块接收算法
 
 Chain selection is a crucial component of how the Filecoin blockchain works. Every chain has an associated weight accounting for the number of blocks mined on it and so the power (storage) they track. It is always preferable to mine atop a heavier Tipset rather than a lighter one. While a miner may be foregoing block rewards earned in the past, this lighter chain is likely to be abandoned by other miners forfeiting any block reward earned as miners converge on a final chain. For more on this, see [chain selection](expected-consensus.md#chain-selection) in the Expected Consensus spec.
 
-链选择是Filecoin区块链如何工作的一个关键组件。每条链都有一个相关的权重，用于计算其上开采的块的数量以及它们跟踪的能力(存储)。它总是在一个更重的Tipset挖矿更好于在一个更轻的上。当一个矿工放弃过去获得的区块奖励时，这个较轻的链条可能会被其他矿工放弃，当矿工聚集在最后一条链条上时，任何区块奖励都会被放弃。有关这方面的更多信息，请参见预期共识规范中的[链选择](expected-consensus.md#chain-selection)。
+链选择是Filecoin区块链如何工作的一个关键组件。每条链都有一个相关的权重，用于计算其上开采的块的数量以及它们跟踪的能力(存储)。它总是在一个更重的Tipset挖掘会更好于在一个更轻的上。当一个矿工放弃过去获得的区块奖励时，这个较轻的链条可能会被其他矿工放弃，当矿工聚集在最后一条链条上时，任何区块奖励都会被放弃。有关这方面的更多信息，请参见预期共识规范中的[链选择](expected-consensus.md#chain-selection)。
 
 However, ahead of finality, a given subchain may be abandoned in order of another, heavier one mined in a given round. In order to rapidly adapt to this, the chain manager must maintain and update all subchains being considered up to finality.
 

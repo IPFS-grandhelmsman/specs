@@ -306,7 +306,7 @@ IV = TotalIssuance * (1-e^(-λ)) // Converted to attoFIL (10e18)
 
 Note: Due to jitter in EC, and the gregorian calendar, there may be some error in the issuance schedule over time. This is expected to be small enough that it's not worth correcting for. Additionally, since the payout mechanism is transferring from the network account to the miner, there is no risk of minting *too much* FIL.
 
-注:由于EC的抖动和公历的原因，随着时间的推移，可能会在发行日程上出现一些错误。这个值应该足够小，不值得修正。此外，由于支付机制是从网络账户转移到矿工，因此没有产生`过多`FIL的风险。
+注:由于EC的抖动和公历的原因，随着时间的推移，可能会在发行日程上出现一些错误。这个值应该足够小，不值得修正。此外，由于支付机制是从网络账户转移到矿工，因此不会产生`过多`FIL的风险。
 
 TODO: Ensure that if a miner earns a block reward while undercollateralized, then `min(blockReward, requiredCollateral-availableBalance)` is garnished (transfered to the miner actor instead of the owner).
 
@@ -324,7 +324,7 @@ Other nodes will receive these blocks and form a Tipset out of the eligible bloc
 Other nodes will receive these blocks and form a Tipset out of the eligible blocks (those that have the same parents and are at the same block height). These nodes will then validate the Tipset. The full procedure for how to verify a Tipset can be found above in [Block Validation](#block-validation). To validate Tipset state, the validating node will, for each block in the Tipset, first apply the block reward value directly to the mining node's account and then apply the messages contained in the block.
 >>>>>>> translate blockchain
 
-其他节点将接收这些块并从符合条件的块(具有相同父块且具有相同块高度的块)中形成一个Tipset。然后，这些节点将验证Tipset。如何验证Tipset的完整过程可以在[块验证](#block-validation))中找到。要验证Tipset状态，验证节点将对Tipset中的每个块首先将区块奖励值直接应用到挖掘节点的帐户，然后应用区块中包含的消息。
+其他节点将接收这些块并从符合条件的块(具有相同父块且具有相同块高度的块)中形成一个Tipset。然后，这些节点将验证Tipset。如何验证Tipset的完整过程可以在[块验证](#block-validation)中找到。要验证Tipset状态，验证节点将对Tipset中的每个块首先将区块奖励值直接应用到挖掘节点的帐户，然后应用区块中包含的消息。
 
 Thus, each of the miners who produced a block in the Tipset will receive a block reward. There will be no lockup. These rewards can be spent immediately.
 
