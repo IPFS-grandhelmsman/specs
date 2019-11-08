@@ -55,6 +55,7 @@ func DeserializeState(x Bytes) State {
 ////////////////////////////////////////////////////////////////////////////////
 
 // TODO: placeholder epoch value -- this will be set later
+// ProveCommitSector needs to be submitted within MAX_PROVE_COMMIT_SECTOR_EPOCH after PreCommit
 const MAX_PROVE_COMMIT_SECTOR_EPOCH = block.ChainEpoch(3)
 
 func (cs *ChallengeStatus_I) OnNewChallenge(currEpoch block.ChainEpoch) ChallengeStatus {
@@ -118,11 +119,11 @@ func (st *StorageMinerActorState_I) _updateCommittedSectors(rt Runtime) {
 // reset NewTerminatedFaults
 func (a *StorageMinerActorCode_I) _submitFaultReport(
 	rt Runtime,
-	newDeclaredFaults util.UVarint,
-	newDetectedFaults util.UVarint,
-	newTerminatedFaults util.UVarint,
+	newDeclaredFaults sector.CompactSectorSet,
+	newDetectedFaults sector.CompactSectorSet,
+	newTerminatedFaults sector.CompactSectorSet,
 ) {
-	faultReport := &power.FaultReport_I{
+	faultReport := &sector.FaultReport_I{
 		NewDeclaredFaults_:   newDeclaredFaults,
 		NewDetectedFaults_:   newDetectedFaults,
 		NewTerminatedFaults_: newTerminatedFaults,
@@ -132,7 +133,7 @@ func (a *StorageMinerActorCode_I) _submitFaultReport(
 	panic(faultReport)
 
 	h, st := a.State(rt)
-	st.SectorTable().Impl().TerminationFaultCount_ = util.UVarint(0)
+	st.SectorTable().Impl().TerminatedFaults_ = sector.CompactSectorSet(make([]byte, 0))
 	UpdateRelease(rt, h, st)
 }
 
@@ -164,8 +165,8 @@ func (a *StorageMinerActorCode_I) _onMissedPoSt(rt Runtime) {
 	UpdateRelease(rt, h, st)
 
 	h, st = a.State(rt)
-	newDetectedFaults := uint64(len(st.SectorTable().Impl().FailingSectors_.SectorsOn()))
-	newTerminatedFaults := st.SectorTable().TerminationFaultCount()
+	newDetectedFaults := st.SectorTable().FailingSectors()
+	newTerminatedFaults := st.SectorTable().TerminatedFaults()
 	Release(rt, h, st)
 
 	// Note: NewDetectedFaults is now the sum of all
@@ -174,7 +175,7 @@ func (a *StorageMinerActorCode_I) _onMissedPoSt(rt Runtime) {
 	// Note: previously declared faults is now treated as part of detected faults
 	a._submitFaultReport(
 		rt,
-		util.UVarint(0), // NewDeclaredFaults
+		sector.CompactSectorSet(make([]byte, 0)), // NewDeclaredFaults
 		newDetectedFaults,
 		newTerminatedFaults,
 	)
@@ -388,7 +389,7 @@ func (st *StorageMinerActorState_I) _updateFailSector(rt Runtime, sectorNo secto
 		// TODO: SendMessage(SPA.SlashPledgeCollateral)
 
 		st._updateClearSector(rt, sectorNo)
-		st.SectorTable().Impl().TerminationFaultCount_ += 1
+		st.SectorTable().Impl().TerminatedFaults_.Add(sectorNo)
 	}
 }
 
@@ -482,14 +483,14 @@ func (a *StorageMinerActorCode_I) SubmitPoSt(rt Runtime, postSubmission poster.P
 	UpdateRelease(rt, h, st)
 
 	h, st = a.State(rt)
-	terminationFaultCount := st.SectorTable().Impl().TerminationFaultCount_
+	newTerminatedFaults := st.SectorTable().TerminatedFaults()
 	Release(rt, h, st)
 
 	a._submitFaultReport(
 		rt,
-		util.UVarint(0), // NewDeclaredFaults
-		util.UVarint(0), // NewDetectedFaults
-		util.UVarint(terminationFaultCount),
+		sector.CompactSectorSet(make([]byte, 0)), // NewDeclaredFaults
+		sector.CompactSectorSet(make([]byte, 0)), // NewDetectedFaults
+		newTerminatedFaults,
 	)
 
 	a._submitPowerReport(rt)
@@ -616,15 +617,14 @@ func (a *StorageMinerActorCode_I) DeclareFaults(rt Runtime, faultSet sector.Comp
 	for _, sectorNo := range faultSet.SectorsOn() {
 		st._updateFailSector(rt, sectorNo, false)
 	}
-	declaredFaults := len(faultSet.SectorsOn())
 
 	UpdateRelease(rt, h, st)
 
 	a._submitFaultReport(
 		rt,
-		util.UVarint(declaredFaults), // DeclaredFaults
-		util.UVarint(0),              // DetectedFaults
-		util.UVarint(0),              // TerminatedFault
+		faultSet,                                  // DeclaredFaults
+		sector.CompactSectorSet(make([]byte, 0)),  // DetectedFaults
+		sector.CompactSectorSet(make([]byte, 0)),  // TerminatedFault
 	)
 
 	a._submitPowerReport(rt)
@@ -680,7 +680,6 @@ func (st *StorageMinerActorState_I) _sectorExists(sectorNo sector.SectorNumber) 
 func (a *StorageMinerActorCode_I) PreCommitSector(rt Runtime, info sector.SectorPreCommitInfo) InvocOutput {
 	TODO() // TODO: validate caller
 
-	// no checks needed
 	// can be called regardless of Challenged status
 
 	// TODO: might record CurrEpoch for PreCommitSector expiration
@@ -703,15 +702,25 @@ func (a *StorageMinerActorCode_I) PreCommitSector(rt Runtime, info sector.Sector
 		rt.Abort("Sector already exists.")
 	}
 
-	// TODO: verify every DealID has been published and not yet expired
+	Release(rt, h, st)
+
+	// verify every DealID has been published and will not expire
+	// before the MAX_PROVE_COMMIT_SECTOR_EPOCH + CurrEpoch
+	// Send(SMA.VerifyPublishedDealIDs)
+	var isPublishedDealIDsVerified bool
+	if !isPublishedDealIDsVerified {
+		rt.Abort("sm.PreCommitSector: verify published DealIDs failed")
+	}
+
+	h2, st2 := a.State(rt)
 
 	precommittedSector := &PreCommittedSector_I{
 		Info_:          info,
 		ReceivedEpoch_: rt.CurrEpoch(),
 	}
-	st.PreCommittedSectors()[info.SectorNumber()] = precommittedSector
+	st2.PreCommittedSectors()[info.SectorNumber()] = precommittedSector
 
-	UpdateRelease(rt, h, st)
+	UpdateRelease(rt, h2, st2)
 	return rt.SuccessReturn()
 }
 
@@ -739,11 +748,14 @@ func (a *StorageMinerActorCode_I) ProveCommitSector(rt Runtime, info sector.Sect
 	if elapsedEpoch > MAX_PROVE_COMMIT_SECTOR_EPOCH {
 		// TODO: potentially some slashing if ProveCommitSector comes late
 
+		// TODO: remove dealIDs from PublishedDeals
+
 		// expired
 		delete(st.PreCommittedSectors(), preCommitSector.Info().SectorNumber())
 		UpdateRelease(rt, h, st)
 		return rt.ErrorReturn(exitcode.UserDefinedError(0)) // TODO: user dfined error code?
 	}
+
 
 	onChainInfo := &sector.OnChainSealVerifyInfo_I{
 		SealedCID_:        preCommitSector.Info().SealedCID(),
@@ -766,6 +778,14 @@ func (a *StorageMinerActorCode_I) ProveCommitSector(rt Runtime, info sector.Sect
 	_, utilizationFound := st.SectorUtilization()[onChainInfo.SectorNumber()]
 	if utilizationFound {
 		rt.Abort("sm.ProveCommitSector: sector number found in SectorUtilization")
+	}
+
+	// ActivateStorageDeals
+	// Ok if deal has started
+	// Send(SMA.ActivateSectorDealIDs)
+	var isSectorDealActivationSuccess bool
+	if !isSectorDealActivationSuccess {
+		rt.Abort("sm.ProveCommitSector: activate sector DealIDs failed")
 	}
 
 	// determine lastDealExpiration from sma
