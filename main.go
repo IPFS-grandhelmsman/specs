@@ -40,7 +40,7 @@ func main() {
 		}
 	})
 
-	port := ":1313" // etc.Etc.String("applet/cms", "listen")
+	port := ":1313"
 	log.Debugf("start at: %s", port)
 	if err := r.Start(port); err != nil {
 		log.Exit(1, errors.As(err))
