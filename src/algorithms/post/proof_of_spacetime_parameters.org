@@ -1,8 +1,10 @@
-#+TITLE: PoSt Parameters
+#+TITLE: PoSt Parameters - 时空证明参数
 #+HUGO_SECTION: algorithms/post
 #+HUGO_BASE_DIR: ../../
 
 This section describes parameters for Rational-PoSt, the Proof-of-Spacetime used in Filecoin.
+
+本节描述了时空证明原理的参数，在Filecoin中使用的证明时空。
 
 #+begin_src lisp :package orient.lang :exports none
 (asdf:load-system :orient)
@@ -36,5 +38,7 @@ This section describes parameters for Rational-PoSt, the Proof-of-Spacetime used
 #+begin_export html
 {{% notice todo %}}
 **TODO**: The above values are tentative and need both backing from research as well as detailed reasoning why we picked them.
+
+**TODO**:以上值是暂定的，需要研究的支持，以及我们选择它们的详细理由。
 {{% /notice %}}
 #+end_export

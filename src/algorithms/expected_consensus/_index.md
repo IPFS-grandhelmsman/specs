@@ -11,6 +11,8 @@ Expected Consensus (EC) is a probabilistic Byzantine fault-tolerant consensus pr
 
 At a very high level, with every new block generated, a miner will craft a new ticket from the prior one in the chain appended with the current epoch number (i.e. parentTipset.epoch + 1 to start). While on expectation at least one block will be generated at every round, in cases where no one finds a block in a given round, a miner will increment the round number and attempt a new leader election (using the new input) thereby ensuring liveness in the protocol.
 
+在一个非常高的层次上，每生成一个新的块，一个矿工就会在附加了当前纪元号(即parentTipset)的链中从之前的块中生成一个新罚单。纪元+1开始)。当每轮至少生成一个块时，如果在给定的轮中没有人找到块，则矿工将增加轮数并尝试新的领导人选举(使用新的输入)，从而确保协议的活性。
+
 The {{<sref storage_power_consensus>}} subsystem uses access to EC to use the following facilities:
 
 {{<sref storage_power_consensus "存储能力证明">}}子系统使用对EC的访问来使用以下设施:
@@ -20,7 +22,7 @@ The {{<sref storage_power_consensus>}} subsystem uses access to EC to use the fo
 - Running and verifying {{<sref leader_election "leader election">}} for block generation.
 - 运行并验证{{<sref leader_election "领导人选举">}}用于生成块。
 - Access to a weighting function enabling {{<sref chain_selection>}} by the chain manager.
-- 通过链管理器访问支持{{}<sref chain_selection "链选择">}的权重函数
+- 通过链管理器访问支持{{<sref chain_selection "链选择">}}的权重函数
 - Access to the most recently {{<sref finality "finalized tipset">}} available to all protocol participants.
 - 对所有协议参与者可用的最近的{{<sref finality "定型的tipset">}}的访问。
 
@@ -29,7 +31,7 @@ The {{<sref storage_power_consensus>}} subsystem uses access to EC to use the fo
 
 For leader election in EC, participants win in proportion to the power they have within the network.
 
-在EC的领导人选举中，参与者根据他们在网络中拥有的权力比例获胜。
+在EC的领导人选举中，参与者根据他们在网络中拥有的能力比例获胜。
 
 A ticket is drawn from the past at the beginning of each new round to perform leader election. EC also generates a new ticket in every round for future use. Tickets are chained independently of the main blockchain. A ticket only depends on the ticket before it, and not any other data in the block.
 On expectation, in Filecoin, every block header contains one ticket, though it could contain more if that block was generated over multiple rounds.
@@ -44,7 +46,7 @@ Tickets are used across the protocol as sources of randomness:
 - The {{<sref sector_sealer>}} uses tickets to bind sector commitments to a given subchain.
 - {{<sref sector_sealer "扇区密封器">}}使用票据将扇区承诺绑定到给定的子链。
 - The {{<sref post_generator>}} likewise uses tickets to prove sectors remain committed as of a given block.
-- {{<sref post_generator "投递生成器">}}同样使用票据来证明扇区仍然是作为给定块提交的。
+- {{<sref post_generator "时空证明生成器">}}同样地使用票据来证明扇区在给定的区块中仍然有效。
 - EC uses them to run leader election and generates new ones for use by the protocol, as detailed below.
 - EC使用它们来运行领导人选举，并生成新的领导人供协议使用，具体如下
 
@@ -79,8 +81,9 @@ In practice, EC defines two different fields within a block:
 在实践中，EC在一个块中定义了两个不同的字段:
 
 - A `Ticket` field — this stores the new ticket generated during this block generation attempt. It is from this ticket that miners will sample randomness to run leader election in `K` rounds.
-- 一个`票据`字段 - 它存储在此块生成尝试期间生成的新票据。从这张票中，矿工们将随机抽样进行领导人选举的`K`轮。
+- 一个`票据`字段 — 它存储在此块生成尝试期间生成的新票据。从这张票中，矿工们将随机抽样进行领导人选举的`K`轮。
 - An `ElectionProof` — this stores a proof that a given miner has won a leader election using the appropriate ticket `K` rounds back appended with the current epoch number. It proves that the leader was validly elected in this epoch.
+- 一个`选举证明` — 这储存了一个证明，一个给定的矿工已经赢得了领导人选举使用适当的票`K`四舍五入后加上当前的纪元数。这证明了领导人是在这个时代有效地选举出来的。
 
 {{< readfile file="election.id" code="true" lang="go" >}}
 {{< readfile file="election.go" code="true" lang="go" >}}
@@ -95,7 +98,7 @@ into a global ticket generation game instead. Rather than having a distinct chan
 for each potential fork in a given round, a miner will either win on all or lose on all
 forks descended from the block in which the ticket is sampled.
 
-随机性回溯有助于将独立票证生成从第一轮的阻塞转回到全局票证生成游戏。
+随机性回溯有助于将独立票据生成从第一轮的阻塞转回到全局票据生成游戏。
 在给定的一轮中，矿工不是对每个潜在的分支有明显的赢或输的机会，而是对所有分支都有赢或输的机会。
 
 This is useful as it reduces opportunities for grinding, across forks or sybil identities.
@@ -108,7 +111,7 @@ However this introduces a tradeoff:
 
 - The randomness lookback means that a miner can know K rounds in advance that they will win,
 decreasing the cost of running a targeted attack (given they have local predictability).
-- 随机回眸意味着矿工可以提前知道K轮他们将会赢，降低了目标攻击的成本(考虑到他们的局部可预测性)。
+- 随机回溯意味着矿工可以提前知道K轮他们将会赢，降低了目标攻击的成本(考虑到他们的局部可预测性)。
 - It means electionProofs are stored separately from new tickets on a block, taking up
 more space on-chain.
 - 这意味着选举证明与新票分开存储在一个块上，在链上占用更多空间。
@@ -120,7 +123,7 @@ K是如何被选择的?
 - On the one end, there is no advantage to picking K larger than finality.
 - 一方面，选择K大于最终结果是没有好处的。
 - On the other, making K smaller reduces adversarial power to grind.
-- 另一方面，使K更小给令人疲劳的工作减少对立力量。
+- 另一方面，使K变小可以减少对手的阻碍力。
 ```
 
 {{<label ticket_generation>}}
@@ -143,7 +146,7 @@ The miner runs the prior ticket through a Verifiable Random Function (VRF) to ge
 
 The VRF's deterministic output adds entropy to the ticket chain, limiting a miner's ability to alter one block to influence a future ticket (given a miner does not know who will win a given round in advance).
 
-VRF的确定性输出增加了票证链的熵，限制了矿工改变一个区块以影响未来票证的能力(假设矿工不知道在给定的一轮中谁会赢)。
+VRF的确定性输出增加了票据链的熵，限制了矿工改变一个区块以影响未来票据的能力(假设矿工不知道在给定的一轮中谁会赢)。
 
 We use the VRF from {{<sref vrf>}} for ticket generation in EC (see the `PrepareNewTicket` method below).
 
@@ -167,11 +170,11 @@ Each Ticket should be generated from the prior one in the ticket-chain and verif
 
 Expected Consensus is a consensus protocol that works by electing a miner from a weighted set in proportion to their power. In the case of Filecoin, participants and powers are drawn from the {{<sref power_table>}}, where power is equivalent to storage provided through time.
 
-预期共识是一种共识协议，通过根据矿工的权力按比例加权选举产生。在Filecoin的情况下，参与者和权力都来自于存储[能力表](storage-market.md#the-power-table)，其中的权力等同于通过时间提供的存储。
+预期共识是一种共识协议，通过根据矿工的能力按比例加权选举产生。在Filecoin的情况下，参与者和能力都来自于存储的[能力表](storage-market.md#the-power-table)，其中的能力等同于通过时间提供的存储。
 
 Leader Election in Expected Consensus must be Secret, Fair and Verifiable. This is achieved through the use of randomness used to run the election. In the case of Filecoin's EC, the blockchain tracks an independent ticket chain. These tickets are used as randomness inputs for Leader Election. Every block generated references an `ElectionProof` derived from a past ticket. The ticket chain is extended by the miner who generates a new block for each successful leader election.
 
-预期一致的领导人选举必须是秘密的、公平的和可核实的。这是通过使用随机用于运行选举。在Filecoin的EC中，区块链跟踪一个独立的票据链。这些票被用作领导人选举的随机输入。每一个区块都会产生一个从过去的选票中衍生出来的`选举证明`。矿工扩展了票证链，为每一次成功的领导人选举生成一个新的区块。
+预期一致的领导人选举必须是秘密的、公平的和可核实的。这是通过使用随机用于运行选举。在Filecoin的EC中，区块链跟踪一个独立的票据链。这些票被用作领导人选举的随机输入。每一个区块都会产生一个从过去的选票中衍生出来的`选举证明`。矿工扩展了票据链，为每一次成功的领导人选举生成一个新的区块。
 
 ### Running a leader election - 运行一个领导人选举
 
@@ -193,7 +196,7 @@ Design goals here include:
 
 To do so, the miner will use tickets from K rounds back as randomness to uniformly draw a value from 0 to 1. Comparing this value to their power, they determine whether they are eligible to mine. A user's `power` is defined as the ratio of the amount of storage they proved as of their last PoSt submission to the total storage in the network as of the current block.
 
-为了做到这一点，矿工将使用K轮返回的票据作为随机性，均匀地从0到1绘制一个值。将这个值与他们的权力进行比较，他们决定是否有资格开采。用户的`能力`被定义为他们在最后一次提交时所证明的存储容量与当前块在网络中的总存储容量的比值。
+为了做到这一点，矿工将使用K轮返回的票据作为随机性，均匀地从0到1绘制一个值。将这个值与他们的能力进行比较，他们决定是否有资格开采。用户的`能力`被定义为他们在最后一次时空证明提交时所证明的存储容量与当前块在网络中的总存储容量的比值。
 
 We use the VRF from {{<sref vrf>}} to run leader election in EC.
 
@@ -211,7 +214,7 @@ In short, the process of crafting a new ElectionProof in round N is as follows i
 
 It is important to note that every block contains two artifacts: one, a ticket derived from last block's ticket to extend the ticket-chain, and two, an election proof derived from the ticket `K` rounds back used to run leader election.
 
-需要注意的是，每个块都包含两个人工制品:一个是从上一个块的ticket派生出的票据，用于扩展票证链;另一个是从用于运行领导人选举的票据`K`轮派生出的选举证明。
+需要注意的是，每个块都包含两个人工制品:一个是从上一个块的ticket派生出的票据，用于扩展票据链;另一个是从用于运行领导人选举的票据`K`轮派生出的选举证明。
 
 Note: Miner power is drawn from the power table, accounting only for power that has been proven over time (see {{<sref power_table>}}).
 
@@ -240,7 +243,7 @@ with:
 
 The above is the integer format of `ElectionProof/MaxValue < e * MinerPower/TotalPower` which makes it easy to see that a miner should win proportionally to the amount of power they have staked in the system. Note that miners with more than `1/e` fraction of power will win once at every round, meaning there may be fewer than e blocks per round with many large miners.
 
-注意:我们从上一轮获取矿机能量。这意味着如果一个矿工在他们的验证期结束时赢得了一个区块，即使他们还没有重新提交帖子，他们仍然保留他们的权力(直到下一轮)。
+注意:我们从上一轮获取矿工能力。这意味着如果一个矿工在他们的验证期结束时赢得了一个区块，即使他们还没有重新提交帖子，他们仍然保留他们的能力(直到下一轮)。
 
 If successful, the miner can craft a block, passing it to the block producer. If unsuccessful, it will wait to hear of another block mined this round to try again. In the case no other block was found in this round the miner can increment the epoch number and try leader election again using the same past ticket and new epoch number.
 
