@@ -111,6 +111,30 @@ func (st *StorageMinerActorState_I) _updateCommittedSectors(rt Runtime) {
 	st.Impl().StagedCommittedSectors_ = make(map[sector.SectorNumber]StagedCommittedSectorInfo)
 }
 
+func (st *StorageMinerActorState_I) _getDealSlashInfoFromSectors(rt Runtime, sectorNumbers []sector.SectorNumber, action deal.StorageDealSlashAction) deal.BatchDealSlashInfo {
+
+	// This is not right but doing this for specing`
+	dealIDs := deal.CompactDealSet(make([]byte, 0))
+
+	for _, sectorNo := range sectorNumbers {
+		utilizationInfo, found := st.SectorUtilization()[sectorNo]
+
+		if !found {
+			rt.Abort("sm._getDealSlashInfoFromSectors: utilization info not found.")
+		}
+
+		dealIDs = dealIDs.Extend(utilizationInfo.ActiveDealIDs())
+
+	}
+
+	ret := &deal.BatchDealSlashInfo_I{
+		DealIDs_: dealIDs.DealsOn(),
+		Action_:  action,
+	}
+
+	return ret
+}
+
 // construct FaultReport
 // reset NewTerminatedFaults
 func (a *StorageMinerActorCode_I) _submitFaultReport(
@@ -128,8 +152,32 @@ func (a *StorageMinerActorCode_I) _submitFaultReport(
 	rt.Abort("TODO") // TODO: Send(SPA, ProcessFaultReport(faultReport))
 	panic(faultReport)
 
-	// TODO: Send(SMA, ProcessSectorDealSlash)
-	// potentially expensive because of data structs
+	if len(newDeclaredFaults) > 0 {
+		h, st := a.State(rt)
+		slashInfo := st._getDealSlashInfoFromSectors(rt, newDeclaredFaults.SectorsOn(), deal.SlashDeclaredFaults)
+		Release(rt, h, st)
+
+		// TODO: Send(StorageMarketActor, ProcessSectorDealSlash)
+		panic(slashInfo)
+	}
+
+	if len(newDetectedFaults) > 0 {
+		h, st := a.State(rt)
+		slashInfo := st._getDealSlashInfoFromSectors(rt, newDetectedFaults.SectorsOn(), deal.SlashDetectedFaults)
+		Release(rt, h, st)
+
+		// TODO: Send(StorageMarketActor, ProcessSectorDealSlash)
+		panic(slashInfo)
+	}
+
+	if len(newTerminatedFaults) > 0 {
+		h, st := a.State(rt)
+		slashInfo := st._getDealSlashInfoFromSectors(rt, newTerminatedFaults.SectorsOn(), deal.SlashTerminatedFaults)
+		Release(rt, h, st)
+
+		// TODO: Send(StorageMarketActor, ProcessSectorDealSlash)
+		panic(slashInfo)
+	}
 
 	h, st := a.State(rt)
 	st.SectorTable().Impl().TerminatedFaults_ = sector.CompactSectorSet(make([]byte, 0))
@@ -162,7 +210,7 @@ func (a *StorageMinerActorCode_I) _submitPowerReport(rt Runtime) {
 
 		rt.Abort("TODO")
 		panic(batchDealPaymentInfo)
-		// Send(StorageMarketActor, ProcessBatchPayments(batchDealPaymentInfo))
+		// Send(StorageMarketActor, ProcessSectorDealPayment(batchDealPaymentInfo))
 	}
 }
 
@@ -474,10 +522,9 @@ func (a *StorageMinerActorCode_I) SubmitPoSt(rt Runtime, postSubmission poster.P
 		case SectorCommittedSN, SectorRecoveringSN:
 			st._updateActivateSector(rt, sectorNo)
 		case SectorActiveSN:
-			// Process payment in all active deals
-			// Note: this must happen before marking sectors as expired.
-			// TODO: Pay miner in a single batch message
-			// SendMessage(sma.ProcessStorageDealsPayment(sm.Sectors()[sectorNumber].DealIDs()))
+			// do nothing
+			// deal payment is lazily evaluated when deals are expired during _updateSectorUtilization
+			// or when miner calls CreditSectorDealPayment
 		default:
 			// TODO: determine proper error here and error-handling machinery
 			rt.Abort("Invalid sector state in ProvingSet.SectorsOn()")
@@ -551,8 +598,8 @@ func (st *StorageMinerActorState_I) _updateExpireSectors(rt Runtime) {
 			// Note: in order to verify if something was stored in the past, one must
 			// scan the chain. SectorNumber can be re-used.
 
-			// Settle deals
-			// SendMessage(sma.SettleExpiredDeals(sc.DealIDs()))
+			// do nothing about deal payment
+			// it will be evaluated after _updateSectorUtilization
 			st._updateClearSector(rt, expiredSectorNo)
 		case SectorFailingSN:
 			// TODO: check if there is any fault that we should handle here
@@ -563,7 +610,6 @@ func (st *StorageMinerActorState_I) _updateExpireSectors(rt Runtime) {
 			st._updateClearSector(rt, expiredSectorNo)
 		default:
 			// Note: SectorCommittedSN, SectorRecoveringSN transition first to SectorFailingSN, then expire
-			// TODO: determine proper error here and error-handling machinery
 			rt.Abort("Invalid sector state in SectorExpirationQueue")
 		}
 	}
@@ -688,7 +734,7 @@ func (a *StorageMinerActorCode_I) CreditSectorDealPayment(rt Runtime, sectorNo s
 	Release(rt, h, st)
 
 	panic(batchDealPaymentInfo)
-	// Send(StorageMarketActor, ProcessBatchPayments(batchDealPaymentInfo))
+	// Send(StorageMarketActor, ProcessSectorDealPayment(batchDealPaymentInfo))
 
 }
 
