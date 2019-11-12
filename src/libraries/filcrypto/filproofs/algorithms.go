@@ -753,7 +753,7 @@ func (sdr *StackedDRG_I) GetChallengedSectors(randomness sector.PoStRandomness, 
 	panic("TODO")
 }
 
-func (sdr *StackedDRG_I) GeneratePoStWitness(challengeSeed sector.PoStRandomness, faults sector.FaultSet, sectorStore sectorIndex.SectorStore) sector.PoStWitness {
+func (sdr *StackedDRG_I) GeneratePoStCandidates(challengeSeed sector.PoStRandomness, faults sector.FaultSet, sectorStore sectorIndex.SectorStore) []sector.ElectionCandidate {
 	challengedSectors, challenges := sdr.GetChallengedSectors(challengeSeed, faults)
 	var proofAuxs []sector.ProofAux
 
@@ -767,7 +767,7 @@ func (sdr *StackedDRG_I) GeneratePoStWitness(challengeSeed sector.PoStRandomness
 	panic("TODO")
 }
 
-func (sdr *StackedDRG_I) GeneratePoStProof(witness sector.PoStWitness) sector.PoStProof {
+func (sdr *StackedDRG_I) GeneratePoStProof(witness sector.PrivatePoStProof) sector.PoStProof {
 	panic("TODO")
 }
 
