@@ -96,9 +96,9 @@ type StorageMarketActorCode struct {
     // Note: if a sector enters into a Failing state but later recovers, client still pays miner as usual
     // client only stops paying when a sector gets cleared (expired or faulted)
     // Deal expiration is also handled here
-    ProcessSectorDealPayment(rt Runtime, info sector.BatchDealPaymentInfo)
+    ProcessSectorDealPayment(rt Runtime, info deal.BatchDealPaymentInfo)
 
     // call by StorageMinerActor
     // slash deal collateral depending on the faults
-    ProcessSectorDealSlash(rt Runtime, info sector.BatchDealSlashInfo)
+    ProcessSectorDealSlash(rt Runtime, info deal.BatchDealSlashInfo)
 }

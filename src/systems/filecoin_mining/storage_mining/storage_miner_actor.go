@@ -154,9 +154,9 @@ func (a *StorageMinerActorCode_I) _submitPowerReport(rt Runtime) {
 	panic(powerReport)
 
 	if len(newExpiredDealIDs) > 0 {
-		batchDealPaymentInfo := &sector.BatchDealPaymentInfo_I{
+		batchDealPaymentInfo := &deal.BatchDealPaymentInfo_I{
 			DealIDs_:               newExpiredDealIDs,
-			Action_:                sector.ExpireStorageDeals,
+			Action_:                deal.ExpireStorageDeals,
 			LastChallengeEndEpoch_: st.ChallengeStatus().LastChallengeEndEpoch(),
 		}
 
@@ -261,7 +261,7 @@ func (st *StorageMinerActorState_I) _updateSectorUtilization(rt Runtime) []deal.
 	// and what happens when a failing sector expires
 
 	// this may not work
-	ret := sector.CompactDealSet(make([]byte, 0))
+	ret := deal.CompactDealSet(make([]byte, 0))
 
 	for _, sectorNo := range st.Impl().ProvingSet_.SectorsOn() {
 		utilizationInfo, found := st.SectorUtilization()[sectorNo]
@@ -275,7 +275,7 @@ func (st *StorageMinerActorState_I) _updateSectorUtilization(rt Runtime) []deal.
 		currEpoch := rt.CurrEpoch()
 		firstExpirationEpoch := utilizationInfo.DealExpirationQueue().Peek().Expiration()
 		totalDealCount := len(st.Sectors()[sectorNo].SealCommitment().DealIDs())
-		newExpiredDealIDs := sector.CompactDealSet(make([]byte, totalDealCount))
+		newExpiredDealIDs := deal.CompactDealSet(make([]byte, totalDealCount))
 
 		if firstExpirationEpoch < currEpoch {
 			// this deal has expired
@@ -679,9 +679,9 @@ func (a *StorageMinerActorCode_I) CreditSectorDealPayment(rt Runtime, sectorNo s
 
 	dealIDs := utilization.Impl().ActiveDealIDs_.DealsOn()
 
-	batchDealPaymentInfo := &sector.BatchDealPaymentInfo_I{
+	batchDealPaymentInfo := &deal.BatchDealPaymentInfo_I{
 		DealIDs_:               dealIDs,
-		Action_:                sector.CreditStorageDeals,
+		Action_:                deal.CreditStorageDeals,
 		LastChallengeEndEpoch_: st.ChallengeStatus().LastChallengeEndEpoch(),
 	}
 
