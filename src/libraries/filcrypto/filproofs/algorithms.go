@@ -628,7 +628,7 @@ func addEncode(data []byte, key []byte, modulus *big.Int, nodeSize int) []byte {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Verification
+// Seal Verification
 
 func (sdr *StackedDRG_I) VerifySeal(sv sector.SealVerifyInfo) bool {
 	onChain := sv.OnChain()
@@ -767,6 +767,13 @@ func (sdr *StackedDRG_I) GeneratePoStCandidates(challengeSeed sector.PoStRandomn
 }
 
 func (sdr *StackedDRG_I) GeneratePoStProof(privateProofs []sector.PrivatePoStProof) sector.PoStProof {
+	panic("TODO")
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// PoSt Verification
+
+func (sdr *StackedDRG_I) VerifyPoSt(sv sector.PoStVerifyInfo) bool {
 	panic("TODO")
 }
 
