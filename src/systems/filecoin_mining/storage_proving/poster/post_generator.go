@@ -34,11 +34,3 @@ func GeneratePoStProof(postCfg sector.PoStCfg, witness sector.PoStWitness) secto
 	sdr := filproofs.SDRParams(nil, postCfg)
 	return sdr.GeneratePoStProof(witness)
 }
-
-func Serialize_PoStSubmission(x PoStSubmission) Serialization {
-	panic("TODO")
-}
-
-func Deserialize_PoStSubmission(x Serialization) (PoStSubmission, error) {
-	panic("TODO")
-}
