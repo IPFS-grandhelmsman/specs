@@ -14,7 +14,6 @@ import vmr "github.com/filecoin-project/specs/systems/filecoin_vm/runtime"
 import exitcode "github.com/filecoin-project/specs/systems/filecoin_vm/runtime/exitcode"
 import deal "github.com/filecoin-project/specs/systems/filecoin_markets/deal"
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // Boilerplate
 ////////////////////////////////////////////////////////////////////////////////
@@ -675,7 +674,7 @@ func (a *StorageMinerActorCode_I) DeclareFaults(rt Runtime, faultSet sector.Comp
 	return rt.SuccessReturn()
 }
 
-func (a *StorageMinerActorCode_I) CreditSectorDealPayment(rt Runtime, sectorNo sector.SectorNumber) {
+func (a *StorageMinerActorCode_I) TallySectorDealPayment(rt Runtime, sectorNo sector.SectorNumber) {
 	TODO() // verify caller
 
 	h, st := a.State(rt)
@@ -690,7 +689,7 @@ func (a *StorageMinerActorCode_I) CreditSectorDealPayment(rt Runtime, sectorNo s
 	activeDealSet := utilizationInfo.DealExpirationQueue().ActiveDealIDs()
 	batchDealPaymentInfo := &deal.BatchDealPaymentInfo_I{
 		DealIDs_:               activeDealSet.DealsOn(),
-		Action_:                deal.CreditStorageDeals,
+		Action_:                deal.TallyStorageDeals,
 		LastChallengeEndEpoch_: st.ChallengeStatus().LastChallengeEndEpoch(),
 	}
 

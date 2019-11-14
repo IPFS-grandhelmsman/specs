@@ -26,6 +26,7 @@ type StorageMarketActorState struct {
     _assertValidDealTimingAtPublish(rt Runtime, p deal.StorageDealProposal)
     _assertValidDealMinimum(rt Runtime, p deal.StorageDealProposal)
     _assertSufficientBalanceAvailForDeal(rt Runtime, p deal.StorageDealProposal)
+    _assertDealExpireAfterMaxProveCommitWindow(rt Runtime, p deal.StorageDealProposal)
 
     // check if StorageDeal is signed before expiry
     // check if StorageDeal has the right signatures
@@ -58,7 +59,7 @@ type StorageMarketActorState struct {
         dealP      deal.StorageDealProposal
         dealTally  deal.StorageDealTally
     )
-    _creditStorageDeals(
+    _tallyStorageDeals(
         rt                     Runtime
         dealIDs                [deal.DealID]
         lastChallengeEndEpoch  block.ChainEpoch
