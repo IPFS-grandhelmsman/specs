@@ -407,6 +407,7 @@ This is detectable when a given miner submits two blocks that satisfy any of the
 
 Any node that detects any of the above events should submit both block headers to the `StoragePowerActor`'s `ReportConsensusFault` method. The "slasher" will receive a portion (TODO: define how much) of the offending miner's {{<sref pledge_collateral>}} as a reward for notifying the network of the fault.
 (TODO: FIP of submitting commitments to block headers to prevent miners censoring slashers in order to gain rewards).
+
 任何检测到上述任何事件的节点都应该将两个区块头提交到`存储能力角色`的`reportaccepsusfault`方法。`削减者`将收到违规矿工的{{<sref pledge_collateral "抵押担保">}}的一部分(TODO:定义多少)作为通知网络故障的奖励。
 (TODO: FIP的提交对区块头的承诺来防止矿工删减削减者以获得奖励)。
 
